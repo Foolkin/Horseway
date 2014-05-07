@@ -1,14 +1,30 @@
 /**
- * Created by admin on 4/15/14.
+ * Horse class contains state of available moves and methods to move the horse.
  */
 public class Horse {
-    //x, y - coordinates of object on a board
-    int madeMoves = 1;
-    int x,y;
+    /**
+     * number of horse moves.
+     */
+    int madeMoves = 0;
+
+    /**
+     * X coordinate.
+     */
+    int x;
+
+    /**
+     * Y coordinate.
+     */
+    int y;
+
+    /**
+     * Board.
+     */
     int[][] board;
 
-    //The first move availableMoves[0] is upHigh (x+1; y-2)
-    //Total horse moves = 8.
+    /**The first move availableMoves[0] is upHigh (x+1; y-2)
+    *Total horse moves = 8.
+    */
     boolean[] availableMoves = new boolean[8];
 
     public Horse(int x, int y, int[][] board){
@@ -18,8 +34,13 @@ public class Horse {
         availableMovesUpdate();
     }
 
-    /*
-    Method goTo, define which method use to move horse
+    public boolean[] getAvailableMoves() {
+        return availableMoves;
+    }
+
+    /**
+     * Method goTo, define which method use to move horse
+     * @param direction number of direction
      */
     public void goTo(int direction){
         switch (direction){
@@ -40,48 +61,54 @@ public class Horse {
     /*
     Methods that define specific horse moves
      */
-    public void goUpHigh(){
+    private void goUpHigh(){
         move(x + 1, y - 2);
     }
 
-    public void goUpLow(){
+    private void goUpLow(){
         move(x + 2, y - 1);
     }
 
-    public void goRightHigh(){
+    private void goRightHigh(){
         move(x + 2, y + 1);
     }
 
-    public void goRightLow(){
+    private void goRightLow(){
         move(x + 1, y + 2);
     }
 
-    public void goDownHigh(){
+    private void goDownHigh(){
         move(x - 2, y + 1);
     }
 
-    public void goDownLow(){
+    private void goDownLow(){
         move(x - 1, y + 2);
     }
 
-    public void goLeftHigh(){
+    private void goLeftHigh(){
         move(x - 2, y - 1);
     }
 
-    public void goLeftLow(){
+    private void goLeftLow(){
         move(x - 1, y - 2);
     }
 
+    /**
+     * Moves horse to x, y coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
     public void move(int x, int y){
         this.x = x;
         this.y = y;
         availableMovesUpdate();
     }
 
-    /*
-    Checks the available moves;
-     */
 
+    /**
+     * Checks if available move exist.
+     * @return true if exist.
+     */
     public boolean hasMove(){
         for(int i = 0; i < availableMoves.length; i++){
             if (availableMoves[i])
@@ -90,6 +117,9 @@ public class Horse {
         return false;
     }
 
+    /**
+     * Update list of available moves.
+     */
     public void availableMovesUpdate(){
         for(int i = 0; i < availableMoves.length; i++){
             switch (i){
@@ -102,20 +132,20 @@ public class Horse {
                 case(6): availableMoves[i] = tryLeftHigh(); break;
                 case(7): availableMoves[i] = tryLeftLow(); break;
                 default:
-                    System.out.println("move unavailable");
+                    throw new IllegalArgumentException("Illegal move");
             }
         }
     }
 
     //Is the up moves available
-    boolean tryUpHigh(){
+    private boolean tryUpHigh(){
         if(y - 2 >= 0 && x + 1 < board.length && board[y-2][x+1] == 0){
             return true;
         }
         return false;
     }
 
-    boolean tryUpLow(){
+    private boolean tryUpLow(){
         if(y - 1 >= 0 && x + 2 < board.length && board[y-1][x+2] == 0) {
             return true;
         }
@@ -123,14 +153,14 @@ public class Horse {
     }
 
     //Is the right moves available
-    boolean tryRightHigh(){
+    private boolean tryRightHigh(){
         if(x + 2 < board.length && y + 1 < board.length && board[y+1][x+2] == 0){
             return true;
         }
         return false;
     }
 
-    boolean tryRightLow(){
+    private boolean tryRightLow(){
         if(x + 1 < board.length && y + 2 < board.length && board[y+2][x+1] == 0){
             return true;
         }
@@ -138,14 +168,14 @@ public class Horse {
     }
 
     //Is the down moves available
-    boolean tryDownHigh(){
+    private boolean tryDownHigh(){
         if(x - 2 >= 0 && y + 1 < board.length && board[y+1][x-2] == 0){
             return true;
         }
         return false;
     }
 
-    boolean tryDownLow(){
+    private boolean tryDownLow(){
         if(x - 1 > 0 && y + 2 < board.length && board[y+2][x-1] == 0){
             return true;
         }
@@ -153,14 +183,14 @@ public class Horse {
     }
 
     //Is the left moves available
-    boolean tryLeftHigh(){
+    private boolean tryLeftHigh(){
         if(x - 2 >= 0 && y - 1 >= 0 && board[y-1][x-2] == 0){
             return true;
         }
         return false;
     }
 
-    boolean tryLeftLow(){
+    private boolean tryLeftLow(){
         if(x - 1 >= 0 && y - 2 >= 0 && board[y-2][x-1] == 0){
             return true;
         }
